@@ -9,6 +9,8 @@
     <style>
         :root { --sidebar-width: 230px; }
 
+        *, *::before, *::after { box-sizing: border-box; }
+
         body { background: #f5f6fa; min-height: 100vh; font-size: 14px; }
 
         /* Sidebar */
@@ -137,7 +139,7 @@
         }
 
         /* Content */
-        #page-content { padding: 24px; flex: 1; }
+        #page-content { padding: 24px; flex: 1; min-width: 0; }
 
         /* Cards */
         .card { border: 1px solid #e0e0e0; border-radius: 8px; box-shadow: none; }
@@ -201,13 +203,17 @@
             .auth-bg { padding: 0; align-items: stretch; }
             .auth-box { border-radius: 0; box-shadow: none; max-width: 100%; min-height: 100vh; display: flex; flex-direction: column; }
             .auth-box-body { flex: 1; padding: 24px 20px; }
+            #topbar { padding: 0 12px; }
+            #page-content { padding: 14px 12px 92px; }
+            #bottom-nav { height: 70px; }
+            #bottom-nav a, #bottom-nav .logout-btn { font-size: 10px; }
         }
 
         /* Responsive */
         @media (max-width: 991.98px) {
-            #sidebar { transform: translateX(-100%); }
+            #sidebar { transform: translateX(-100%); width: 100%; max-width: 320px; }
             #sidebar.show { transform: translateX(0); }
-            #main-wrapper { margin-left: 0; padding-bottom: 65px; }
+            #main-wrapper { margin-left: 0; padding-bottom: 80px; min-height: calc(100vh - 60px); }
             #sidebar-overlay {
                 display: none;
                 position: fixed; inset: 0;
@@ -215,9 +221,11 @@
                 z-index: 999;
             }
             #sidebar-overlay.show { display: block; }
-            #page-content { padding: 14px; }
+            #page-content { padding: 16px 12px 92px; }
             .topbar-title { font-size: 14px; }
             #topbar { padding: 0 14px; height: 52px; }
+            #bottom-nav { display: flex; }
+            .topbar-right .d-none.d-md-inline { display: none !important; }
         }
 
         /* Bottom nav for mobile */
