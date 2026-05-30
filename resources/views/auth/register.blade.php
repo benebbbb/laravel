@@ -29,13 +29,29 @@
             </div>
             <div class="mb-3">
                 <label class="form-label fw-semibold" style="font-size:13px">Password</label>
-                <input type="password" name="password" class="form-control form-control-sm"
-                       placeholder="Min. 8 characters" required>
+                <div class="position-relative">
+                    <input type="password" name="password" id="regPassword"
+                           class="form-control form-control-sm pe-5"
+                           placeholder="Min. 8 characters" required>
+                    <button type="button" tabindex="-1"
+                            style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;padding:0;color:#6c757d"
+                            onclick="var i=document.getElementById('regPassword');var e=document.getElementById('eyeReg');if(i.type==='password'){i.type='text';e.classList.replace('bi-eye','bi-eye-slash');}else{i.type='password';e.classList.replace('bi-eye-slash','bi-eye');}">
+                        <i class="bi bi-eye" id="eyeReg"></i>
+                    </button>
+                </div>
             </div>
             <div class="mb-4">
                 <label class="form-label fw-semibold" style="font-size:13px">Confirm Password</label>
-                <input type="password" name="password_confirmation" class="form-control form-control-sm"
-                       placeholder="Repeat password" required>
+                <div class="position-relative">
+                    <input type="password" name="password_confirmation" id="regConfirm"
+                           class="form-control form-control-sm pe-5"
+                           placeholder="Repeat password" required>
+                    <button type="button" tabindex="-1"
+                            style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;padding:0;color:#6c757d"
+                            onclick="var i=document.getElementById('regConfirm');var e=document.getElementById('eyeConfirm');if(i.type==='password'){i.type='text';e.classList.replace('bi-eye','bi-eye-slash');}else{i.type='password';e.classList.replace('bi-eye-slash','bi-eye');}">
+                        <i class="bi bi-eye" id="eyeConfirm"></i>
+                    </button>
+                </div>
             </div>
             <button type="submit" class="btn btn-primary w-100">Register</button>
         </form>
