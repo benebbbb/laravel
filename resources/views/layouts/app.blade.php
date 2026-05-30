@@ -248,6 +248,22 @@
         #bottom-nav a i { font-size: 20px; }
         #bottom-nav a.active { color: #2980b9; }
         #bottom-nav a:hover { color: #2980b9; }
+        #bottom-nav .logout-btn {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 2px;
+            background: none;
+            border: none;
+            color: #ef4444;
+            font-size: 10px;
+            font-weight: 500;
+            padding: 6px 0;
+            cursor: pointer;
+        }
+        #bottom-nav .logout-btn i { font-size: 20px; }
 
         @media (max-width: 991.98px) {
             #bottom-nav { display: flex; }
@@ -348,6 +364,12 @@
     <a href="{{ route('profile.show') }}" class="{{ request()->routeIs('profile.*') ? 'active' : '' }}">
         <i class="bi bi-person"></i> Profile
     </a>
+    <form method="POST" action="{{ route('logout') }}" style="flex:1;display:flex">
+        @csrf
+        <button type="submit" class="logout-btn">
+            <i class="bi bi-box-arrow-right"></i> Logout
+        </button>
+    </form>
 </nav>
 
 @else
