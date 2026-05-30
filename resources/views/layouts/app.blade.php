@@ -204,16 +204,18 @@
             .auth-box { border-radius: 0; box-shadow: none; max-width: 100%; min-height: 100vh; display: flex; flex-direction: column; }
             .auth-box-body { flex: 1; padding: 24px 20px; }
             #topbar { padding: 0 12px; }
-            #page-content { padding: 14px 12px 92px; }
-            #bottom-nav { height: 70px; }
-            #bottom-nav a, #bottom-nav .logout-btn { font-size: 10px; }
+            #page-content { padding: 16px 12px 120px; }
+            #bottom-nav { height: 75px; }
+            #bottom-nav a, #bottom-nav .logout-btn { font-size: 9px; }
+            #bottom-nav a i, #bottom-nav .logout-btn i { font-size: 18px; }
+            .topbar-title { max-width: 70%; display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
         }
 
         /* Responsive */
         @media (max-width: 991.98px) {
-            #sidebar { transform: translateX(-100%); width: 100%; max-width: 320px; }
+            #sidebar { transform: translateX(-100%); width: 100%; max-width: 100%; }
             #sidebar.show { transform: translateX(0); }
-            #main-wrapper { margin-left: 0; padding-bottom: 80px; min-height: calc(100vh - 60px); }
+            #main-wrapper { margin-left: 0; padding-bottom: 100px; min-height: calc(100vh - 60px); }
             #sidebar-overlay {
                 display: none;
                 position: fixed; inset: 0;
@@ -221,9 +223,10 @@
                 z-index: 999;
             }
             #sidebar-overlay.show { display: block; }
-            #page-content { padding: 16px 12px 92px; }
+            #page-content { padding: 18px 12px 110px; }
             .topbar-title { font-size: 14px; }
             #topbar { padding: 0 14px; height: 52px; }
+            #sidebar .nav-link { padding: 12px 18px; font-size: 14px; }
             #bottom-nav { display: flex; }
             .topbar-right .d-none.d-md-inline { display: none !important; }
         }
