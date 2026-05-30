@@ -197,11 +197,17 @@
         .auth-box-header h5 { font-weight: 700; margin: 0; font-size: 18px; }
         .auth-box-body { padding: 24px; }
 
+        @media (max-width: 575.98px) {
+            .auth-bg { padding: 0; align-items: stretch; }
+            .auth-box { border-radius: 0; box-shadow: none; max-width: 100%; min-height: 100vh; display: flex; flex-direction: column; }
+            .auth-box-body { flex: 1; padding: 24px 20px; }
+        }
+
         /* Responsive */
         @media (max-width: 991.98px) {
             #sidebar { transform: translateX(-100%); }
             #sidebar.show { transform: translateX(0); }
-            #main-wrapper { margin-left: 0; }
+            #main-wrapper { margin-left: 0; padding-bottom: 65px; }
             #sidebar-overlay {
                 display: none;
                 position: fixed; inset: 0;
@@ -209,6 +215,42 @@
                 z-index: 999;
             }
             #sidebar-overlay.show { display: block; }
+            #page-content { padding: 14px; }
+            .topbar-title { font-size: 14px; }
+            #topbar { padding: 0 14px; height: 52px; }
+        }
+
+        /* Bottom nav for mobile */
+        #bottom-nav {
+            display: none;
+            position: fixed;
+            bottom: 0; left: 0; right: 0;
+            height: 60px;
+            background: #fff;
+            border-top: 1px solid #e0e0e0;
+            z-index: 1000;
+            box-shadow: 0 -2px 10px rgba(0,0,0,.08);
+        }
+        #bottom-nav a {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 2px;
+            text-decoration: none;
+            color: #9ca3af;
+            font-size: 10px;
+            font-weight: 500;
+            padding: 6px 0;
+            transition: color .15s;
+        }
+        #bottom-nav a i { font-size: 20px; }
+        #bottom-nav a.active { color: #2980b9; }
+        #bottom-nav a:hover { color: #2980b9; }
+
+        @media (max-width: 991.98px) {
+            #bottom-nav { display: flex; }
         }
 
         .toast-container { z-index: 1100; }
@@ -291,6 +333,22 @@
         @yield('content')
     </div>
 </div>
+
+{{-- Mobile Bottom Nav --}}
+<nav id="bottom-nav">
+    <a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">
+        <i class="bi bi-grid"></i> Home
+    </a>
+    <a href="{{ route('medicines.index') }}" class="{{ request()->routeIs('medicines.*') ? 'active' : '' }}">
+        <i class="bi bi-journal-medical"></i> Medicines
+    </a>
+    <a href="{{ route('users.index') }}" class="{{ request()->routeIs('users.*') ? 'active' : '' }}">
+        <i class="bi bi-people"></i> Users
+    </a>
+    <a href="{{ route('profile.show') }}" class="{{ request()->routeIs('profile.*') ? 'active' : '' }}">
+        <i class="bi bi-person"></i> Profile
+    </a>
+</nav>
 
 @else
 <div class="auth-bg">
