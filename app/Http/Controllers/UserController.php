@@ -48,13 +48,24 @@ class UserController extends Controller
             ->with('toast_success', 'User "' . $request->name . '" added successfully.');
     }
 
+    private function authorizeSelf(User $user)
+    {
+        if ($user->id !== Auth::id()) {
+            abort(403);
+        }
+    }
+
     public function edit(User $user)
     {
+        $this->authorizeSelf($user);
+
         return view('users.edit', compact('user'));
     }
 
     public function update(Request $request, User $user)
     {
+        $this->authorizeSelf($user);
+
         $request->validate([
             'name'     => 'required|string|max:255',
             'email'    => 'required|email|unique:users,email,' . $user->id,
@@ -75,15 +86,9 @@ class UserController extends Controller
 
     public function destroy(User $user)
     {
-        if ($user->id === Auth::id()) {
-            return redirect()->route('users.index')
-                ->with('toast_error', 'You cannot delete your own account.');
-        }
-
-        $name = $user->name;
-        $user->delete();
+        abort_if($user->id !== Auth::id(), 403);
 
         return redirect()->route('users.index')
-            ->with('toast_success', 'User "' . $name . '" deleted successfully.');
+            ->with('toast_error', 'You cannot delete your own account.');
     }
 }
