@@ -66,6 +66,14 @@
                                         onclick="openEditUser({{ $user->id }}, '{{ addslashes($user->name) }}', '{{ addslashes($user->email) }}')">
                                         <i class="bi bi-pencil"></i>
                                     </button>
+                                @else
+                                    <button type="button" class="btn btn-sm btn-outline-danger"
+                                        onclick="confirmDelete({{ $user->id }}, '{{ addslashes($user->name) }}')">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                    <form id="delete-form-{{ $user->id }}" action="{{ route('users.destroy', $user) }}" method="POST" class="d-none">
+                                        @csrf @method('DELETE')
+                                    </form>
                                 @endif
                             </td>
                         </tr>
@@ -114,6 +122,14 @@
                                 onclick="openEditUser({{ $user->id }}, '{{ addslashes($user->name) }}', '{{ addslashes($user->email) }}')">
                                 <i class="bi bi-pencil"></i>
                             </button>
+                        @else
+                            <button type="button" class="btn btn-sm btn-outline-danger"
+                                onclick="confirmDelete({{ $user->id }}, '{{ addslashes($user->name) }}')">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                            <form id="delete-form-{{ $user->id }}" action="{{ route('users.destroy', $user) }}" method="POST" class="d-none">
+                                @csrf @method('DELETE')
+                            </form>
                         @endif
                     </div>
                 </div>

@@ -4,12 +4,12 @@
 
 @section('content')
 <div class="row justify-content-center">
-    <div class="col-lg-7">
+    <div class="col-12 col-lg-7">
         <div class="card shadow-sm">
             <div class="card-header bg-white border-bottom fw-semibold">
                 <i class="bi bi-person-gear me-2 text-primary"></i> Edit Profile
             </div>
-            <div class="card-body p-4">
+            <div class="card-body p-3 p-md-4">
 
                 @if($errors->any())
                     <div class="alert alert-danger py-2">
@@ -66,63 +66,59 @@
                         @error('email') <div class="invalid-feedback">{{ $message }}</div> @enderror
                     </div>
 
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Gender</label>
-                            <select name="gender" class="form-select @error('gender') is-invalid @enderror">
-                                <option value="">— Select —</option>
-                                @foreach(['Male','Female','Other'] as $g)
-                                    <option value="{{ $g }}" {{ old('gender', $user->gender) == $g ? 'selected' : '' }}>
-                                        {{ $g }}
-                                    </option>
-                                @endforeach
-                            </select>
-                            @error('gender') <div class="invalid-feedback">{{ $message }}</div> @enderror
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Address</label>
-                            <input type="text" name="address"
-                                   class="form-control @error('address') is-invalid @enderror"
-                                   value="{{ old('address', $user->address) }}">
-                            @error('address') <div class="invalid-feedback">{{ $message }}</div> @enderror
-                        </div>
+                    <div class="mb-3">
+                        <label class="form-label">Gender</label>
+                        <select name="gender" class="form-select @error('gender') is-invalid @enderror">
+                            <option value="">— Select —</option>
+                            @foreach(['Male','Female','Other'] as $g)
+                                <option value="{{ $g }}" {{ old('gender', $user->gender) == $g ? 'selected' : '' }}>{{ $g }}</option>
+                            @endforeach
+                        </select>
+                        @error('gender') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Address</label>
+                        <input type="text" name="address"
+                               class="form-control @error('address') is-invalid @enderror"
+                               value="{{ old('address', $user->address) }}">
+                        @error('address') <div class="invalid-feedback">{{ $message }}</div> @enderror
                     </div>
 
                     <hr>
                     <p class="text-muted small mb-3">Leave password fields blank to keep your current password.</p>
 
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">New Password</label>
-                            <div class="position-relative">
-                                <input type="password" name="password" id="newPassword"
-                                       class="form-control @error('password') is-invalid @enderror pe-5"
-                                       autocomplete="new-password">
-                                <button type="button" tabindex="-1" onclick="togglePass('newPassword','eyeNew')"
-                                        style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;padding:0;color:#6c757d">
-                                    <i class="bi bi-eye" id="eyeNew"></i>
-                                </button>
-                            </div>
-                            @error('password') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                    <div class="mb-3">
+                        <label class="form-label">New Password</label>
+                        <div class="position-relative">
+                            <input type="password" name="password" id="newPassword"
+                                   class="form-control @error('password') is-invalid @enderror pe-5"
+                                   autocomplete="new-password">
+                            <button type="button" tabindex="-1" onclick="togglePass('newPassword','eyeNew')"
+                                    style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;padding:0;color:#6c757d">
+                                <i class="bi bi-eye" id="eyeNew"></i>
+                            </button>
                         </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Confirm New Password</label>
-                            <div class="position-relative">
-                                <input type="password" name="password_confirmation" id="confirmPassword"
-                                       class="form-control pe-5">
-                                <button type="button" tabindex="-1" onclick="togglePass('confirmPassword','eyeConfirm')"
-                                        style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;padding:0;color:#6c757d">
-                                    <i class="bi bi-eye" id="eyeConfirm"></i>
-                                </button>
-                            </div>
+                        @error('password') <div class="invalid-feedback d-block">{{ $message }}</div> @enderror
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label">Confirm New Password</label>
+                        <div class="position-relative">
+                            <input type="password" name="password_confirmation" id="confirmPassword"
+                                   class="form-control pe-5">
+                            <button type="button" tabindex="-1" onclick="togglePass('confirmPassword','eyeConfirm')"
+                                    style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;padding:0;color:#6c757d">
+                                <i class="bi bi-eye" id="eyeConfirm"></i>
+                            </button>
                         </div>
                     </div>
 
-                    <div class="d-flex gap-2 mt-2">
-                        <button type="submit" class="btn btn-primary">
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary flex-fill">
                             <i class="bi bi-check-lg me-1"></i> Save Changes
                         </button>
-                        <a href="{{ route('profile.show') }}" class="btn btn-outline-secondary">Cancel</a>
+                        <a href="{{ route('profile.show') }}" class="btn btn-outline-secondary flex-fill">Cancel</a>
                     </div>
                 </form>
             </div>
@@ -144,8 +140,6 @@
             icon.classList.replace('bi-eye-slash', 'bi-eye');
         }
     }
-
-    // Live avatar preview
     document.getElementById('profile_picture').addEventListener('change', function () {
         const file = this.files[0];
         if (!file) return;

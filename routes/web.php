@@ -23,7 +23,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middl
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    Route::resource('medicines', MedicineController::class)->except(['show']);
+    Route::resource('medicines', MedicineController::class)->except(['show', 'create', 'edit']);
     Route::resource('users', UserController::class)->except(['show']);
 
     Route::get('/profile',        [ProfileController::class, 'show'])->name('profile.show');

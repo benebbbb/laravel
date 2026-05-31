@@ -86,9 +86,14 @@ class UserController extends Controller
 
     public function destroy(User $user)
     {
-        abort_if($user->id !== Auth::id(), 403);
+        if ($user->id === Auth::id()) {
+            return redirect()->route('users.index')
+                ->with('toast_error', 'You cannot delete your own account.');
+        }
+
+        $user->delete();
 
         return redirect()->route('users.index')
-            ->with('toast_error', 'You cannot delete your own account.');
+            ->with('toast_success', 'User "' . $user->name . '" deleted successfully.');
     }
 }

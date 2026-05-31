@@ -29,11 +29,6 @@ class MedicineController extends Controller
         return view('medicines.index', compact('medicines'));
     }
 
-    public function create()
-    {
-        return view('medicines.create');
-    }
-
     public function store(Request $request)
     {
         $request->validate([
@@ -51,13 +46,6 @@ class MedicineController extends Controller
 
         return redirect()->route('medicines.index')
             ->with('toast_success', 'Medicine added successfully.');
-    }
-
-    public function edit(Medicine $medicine)
-    {
-        abort_if($medicine->created_by !== Auth::id(), 403);
-
-        return view('medicines.edit', compact('medicine'));
     }
 
     public function update(Request $request, Medicine $medicine)
