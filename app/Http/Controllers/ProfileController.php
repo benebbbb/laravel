@@ -51,4 +51,19 @@ class ProfileController extends Controller
         return redirect()->route('profile.show')
             ->with('toast_success', 'Profile updated successfully.');
     }
+
+    public function destroy()
+    {
+        $user = Auth::user();
+
+        if ($user->profile_picture) {
+            Storage::disk('public')->delete($user->profile_picture);
+        }
+
+        Auth::logout();
+        $user->delete();
+
+        return redirect()->route('login')
+            ->with('toast_success', 'Your account has been deleted.');
+    }
 }
