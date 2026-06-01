@@ -164,7 +164,7 @@
             labels: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
             datasets: [{
                 label: 'Medicines Added',
-                data: @json(array_values($monthlyData->toArray())),
+                data: @json($monthlyData),
                 backgroundColor: 'rgba(13,110,253,.75)',
                 borderRadius: 5,
                 borderSkipped: false,
