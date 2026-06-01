@@ -10,21 +10,21 @@ class MedicineController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Medicine::where('created_by', Auth::id());
+        $medicines = Medicine::where('created_by', Auth::id());
 
-        if ($request->filled('search')) {
-            $query->where('medicine_name', 'like', '%' . $request->search . '%');
+        if ($request->search) {
+            $medicines = $medicines->where('medicine_name', 'like', '%' . $request->search . '%');
         }
 
-        if ($request->filled('category')) {
-            $query->where('category', $request->category);
+        if ($request->category) {
+            $medicines = $medicines->where('category', $request->category);
         }
 
-        if ($request->filled('expiration_date')) {
-            $query->whereDate('expiration_date', $request->expiration_date);
+        if ($request->expiration_date) {
+            $medicines = $medicines->whereDate('expiration_date', $request->expiration_date);
         }
 
-        $medicines = $query->orderBy('expiration_date')->paginate(10)->withQueryString();
+        $medicines = $medicines->orderBy('expiration_date', 'asc')->paginate(10)->withQueryString();
 
         return view('medicines.index', compact('medicines'));
     }
@@ -32,47 +32,57 @@ class MedicineController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'medicine_name'   => 'required|string|max:255',
-            'description'     => 'nullable|string',
-            'category'        => 'required|string|max:100',
-            'quantity'        => 'required|integer|min:0',
+            'medicine_name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'category' => 'required|string|max:100',
+            'quantity' => 'required|integer|min:0',
             'expiration_date' => 'required|date',
         ]);
 
-        Medicine::create([
-            ...$request->only('medicine_name', 'description', 'category', 'quantity', 'expiration_date'),
-            'created_by' => Auth::id(),
-        ]);
+        $medicine = new Medicine();
+        $medicine->medicine_name = $request->medicine_name;
+        $medicine->description = $request->description;
+        $medicine->category = $request->category;
+        $medicine->quantity = $request->quantity;
+        $medicine->expiration_date = $request->expiration_date;
+        $medicine->created_by = Auth::id();
+        $medicine->save();
 
-        return redirect()->route('medicines.index')
-            ->with('toast_success', 'Medicine added successfully.');
+        return redirect()->route('medicines.index')->with('toast_success', 'Medicine added successfully.');
     }
 
     public function update(Request $request, Medicine $medicine)
     {
-        abort_if($medicine->created_by !== Auth::id(), 403);
+        if ($medicine->created_by != Auth::id()) {
+            abort(403);
+        }
 
         $request->validate([
-            'medicine_name'   => 'required|string|max:255',
-            'description'     => 'nullable|string',
-            'category'        => 'required|string|max:100',
-            'quantity'        => 'required|integer|min:0',
+            'medicine_name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'category' => 'required|string|max:100',
+            'quantity' => 'required|integer|min:0',
             'expiration_date' => 'required|date',
         ]);
 
-        $medicine->update($request->only('medicine_name', 'description', 'category', 'quantity', 'expiration_date'));
+        $medicine->medicine_name = $request->medicine_name;
+        $medicine->description = $request->description;
+        $medicine->category = $request->category;
+        $medicine->quantity = $request->quantity;
+        $medicine->expiration_date = $request->expiration_date;
+        $medicine->save();
 
-        return redirect()->route('medicines.index')
-            ->with('toast_success', 'Medicine updated successfully.');
+        return redirect()->route('medicines.index')->with('toast_success', 'Medicine updated successfully.');
     }
 
     public function destroy(Medicine $medicine)
     {
-        abort_if($medicine->created_by !== Auth::id(), 403);
+        if ($medicine->created_by != Auth::id()) {
+            abort(403);
+        }
 
         $medicine->delete();
 
-        return redirect()->route('medicines.index')
-            ->with('toast_success', 'Medicine deleted successfully.');
+        return redirect()->route('medicines.index')->with('toast_success', 'Medicine deleted successfully.');
     }
 }

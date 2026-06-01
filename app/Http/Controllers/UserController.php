@@ -11,16 +11,16 @@ class UserController extends Controller
 {
     public function index(Request $request)
     {
-        $query = User::query();
+        $users = User::query();
 
-        if ($request->filled('search')) {
-            $query->where(function ($q) use ($request) {
+        if ($request->search) {
+            $users = $users->where(function ($q) use ($request) {
                 $q->where('name', 'like', '%' . $request->search . '%')
                   ->orWhere('email', 'like', '%' . $request->search . '%');
             });
         }
 
-        $users = $query->latest()->paginate(10)->withQueryString();
+        $users = $users->latest()->paginate(10)->withQueryString();
 
         return view('users.index', compact('users'));
     }
@@ -33,67 +33,61 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name'     => 'required|string|max:255',
-            'email'    => 'required|email|unique:users',
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users',
             'password' => 'required|min:8|confirmed',
         ]);
 
-        User::create([
-            'name'     => $request->name,
-            'email'    => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
+        $user = new User();
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->password = Hash::make($request->password);
+        $user->save();
 
-        return redirect()->route('users.index')
-            ->with('toast_success', 'User "' . $request->name . '" added successfully.');
-    }
-
-    private function authorizeSelf(User $user)
-    {
-        if ($user->id !== Auth::id()) {
-            abort(403);
-        }
+        return redirect()->route('users.index')->with('toast_success', 'User added successfully.');
     }
 
     public function edit(User $user)
     {
-        $this->authorizeSelf($user);
+        if ($user->id != Auth::id()) {
+            abort(403);
+        }
 
         return view('users.edit', compact('user'));
     }
 
     public function update(Request $request, User $user)
     {
-        $this->authorizeSelf($user);
+        if ($user->id != Auth::id()) {
+            abort(403);
+        }
 
         $request->validate([
-            'name'     => 'required|string|max:255',
-            'email'    => 'required|email|unique:users,email,' . $user->id,
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email,' . $user->id,
             'password' => 'nullable|min:8|confirmed',
         ]);
 
-        $data = $request->only('name', 'email');
+        $user->name = $request->name;
+        $user->email = $request->email;
 
-        if ($request->filled('password')) {
-            $data['password'] = Hash::make($request->password);
+        if ($request->password) {
+            $user->password = Hash::make($request->password);
         }
 
-        $user->update($data);
+        $user->save();
 
-        return redirect()->route('users.index')
-            ->with('toast_success', 'User "' . $user->name . '" updated successfully.');
+        return redirect()->route('users.index')->with('toast_success', 'User updated successfully.');
     }
 
     public function destroy(User $user)
     {
-        if ($user->id === Auth::id()) {
-            return redirect()->route('users.index')
-                ->with('toast_error', 'You cannot delete your own account.');
+        if ($user->id == Auth::id()) {
+            return redirect()->route('users.index')->with('toast_error', 'You cannot delete your own account.');
         }
 
         $user->delete();
 
-        return redirect()->route('users.index')
-            ->with('toast_success', 'User "' . $user->name . '" deleted successfully.');
+        return redirect()->route('users.index')->with('toast_success', 'User deleted successfully.');
     }
 }
