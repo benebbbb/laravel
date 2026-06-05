@@ -55,9 +55,7 @@ class AuthController extends Controller
         $user->password = Hash::make($request->password);
         $user->save();
 
-        Auth::login($user);
-
-        return redirect()->route('dashboard')->with('toast_success', 'Welcome, ' . $user->name . '!');
+        return redirect()->route('login')->with('toast_success', 'Registered successfully! Please log in.');
     }
 
     public function logout(Request $request)
